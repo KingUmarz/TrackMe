@@ -38,10 +38,12 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.customerService.login(this.loginForm.value).subscribe({
       next: (response) => {
+        console.log(response);
         this.loading = false;
         const token = response.token; // Get token from response
         if (token) {
           sessionStorage.setItem('token', token); // Save token to sessionStorage
+          sessionStorage.setItem('name', response.customerName); // Save token to sessionStorage
           console.log('Token saved successfully:', token);
           alert('Login successful!');
           this.router.navigate(['/Dashboard']); // Navigate to Dashboard

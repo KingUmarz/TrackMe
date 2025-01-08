@@ -1,0 +1,38 @@
+<div class="container">
+    <!-- Left Column (Friend List) -->
+    <div class="sidebar">
+        <img src="assets/img/previous.png" routerLink="/Social">
+        <h2>Friend List</h2>
+        <ul>
+            <li *ngFor="let friend of friends" (click)="selectFriend(friend)">
+            {{ friend.name }}
+            </li>
+        </ul>
+    </div>
+  
+    <!-- Right Column (Chat) -->
+    <div class="chat-area">
+      <h2>{{ selectedFriend ? selectedFriend.name : 'Select a friend' }}</h2>
+      <div *ngIf="selectedFriend; else noSelection">
+        <div class="messages">
+          <div *ngFor="let message of messages" class="message">
+            {{ message }}
+          </div>
+        </div>
+  
+        <div class="input-area">
+          <input
+            type="text"
+            [(ngModel)]="newMessage"
+            placeholder="Type a message"
+          />
+          <button (click)="sendMessage(newMessage)">Send</button>
+        </div>
+      </div>
+  
+      <ng-template #noSelection>
+        <p>Please select a friend to start chatting.</p>
+      </ng-template>
+    </div>
+  </div>
+  

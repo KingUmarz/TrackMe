@@ -1,0 +1,35 @@
+<div class="container">
+  <h2>Social Page</h2>
+
+  <!-- Add Friend and Friend List Section -->
+  <div class="header-section" style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="buttons">
+      <button (click)="toggleFriendList()" [routerLink]="'/friends-list'">Friend List</button>
+      <button class="achive" [routerLink]="'/achivement'">Share Achievement</button>
+    </div>
+    <div style="text-align: right;">
+      <input 
+        type="text" 
+        placeholder="Enter friend's name" 
+        [(ngModel)]="newFriend" 
+        class="friend-input"
+      />
+      <button (click)="addFriend()">Add Friend</button>
+    </div>
+  </div>
+
+  <!-- Random Posts Section -->
+  <div class="section random-posts">
+    <h3>Explore Posts</h3>
+    <ul>
+      <li *ngFor="let post of randomPosts">
+        <div class="post">
+          <h4>{{ post.author }}</h4>
+          <p>{{ post.content }}</p>
+          <small>{{ post.date }}</small>
+        </div>
+      </li>
+    </ul>
+    <button (click)="loadMorePosts()">Load More Posts</button>
+  </div>
+

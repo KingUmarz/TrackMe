@@ -50,10 +50,18 @@ const loginCustomer = async (req, res) => {
       return res.status(401).json({ message: 'Email atau password salah' });
     }
 
-    // Membuat JWT token
-    const token = jwt.sign({ customerID: customer.customerID, email: customer.email }, 'secret_key', { expiresIn: '1h' });
+    // Membuat JWT token dengan nama pelanggan
+    const token = jwt.sign({ 
+      customerID: customer.customerID, 
+      email: customer.email, 
+      customerName: customer.customerName 
+    }, 'secret_key', { expiresIn: '1h' });
 
-    res.json({ message: 'Login berhasil', token });
+    res.json({ 
+      message: 'Login berhasil', 
+      token, 
+      customerName: customer.customerName 
+    });
   } catch (error) {
     console.error('Error login: ', error);
     res.status(500).json({ message: 'Terjadi kesalahan saat login' });
@@ -61,7 +69,23 @@ const loginCustomer = async (req, res) => {
 };
 
 
+const getCustomerProfile = async (req, res) => {
+ 
+  try {
+    const { customerID } = req.user; 
+    const customer = await Customer.findOne({ customerID });
+    if (!customer) {
+      return res.status(404).json({ message: 'Pengguna tidak ditemukan' });
+    }
+    res.json({ customerName: customer.customerName });
+  } catch (error) {
+    console.error('Error mengambil profil pengguna:', error);
+    res.status(500).json({ message: 'Gagal mengambil profil pengguna' });
+  }
+};
+
 module.exports = {
   registerCustomer,
-  loginCustomer
+  loginCustomer,
+  getCustomerProfile
 };

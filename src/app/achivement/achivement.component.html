@@ -1,0 +1,29 @@
+<div class="container">
+  <img src="assets/img/previous.png" routerLink="/Social">
+    <h2>Share Your Achievement</h2>
+    <form (ngSubmit)="shareAchievement()">
+      <div class="form-group">
+        <label for="title">Achievement Title</label>
+        <input
+          id="title"
+          type="text"
+          [(ngModel)]="achievementTitle"
+          name="title"
+          required
+          placeholder="Enter achievement title"
+        />
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          [(ngModel)]="achievementDescription"
+          name="description"
+          required
+          placeholder="Describe your achievement"
+        ></textarea>
+      </div>
+      <button type="submit">Share</button>
+    </form>
+  </div>
+  

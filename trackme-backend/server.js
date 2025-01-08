@@ -7,14 +7,31 @@ const jwt = require('jsonwebtoken'); // Tambahkan untuk verifikasi JWT
 // Import controller
 const customerControl = require('./controller/customerControl');
 const dailyActivityControl = require('./controller/dailyActivityControl');
+const friendRoutes = require('./routes/friendRoutes');
+const messageRoutes = require('./routes/messageRoutes');
+const achievementRoutes = require('./routes/achievementRoutes');
 const app = express();
 
+// Mengimport rute
+const historicalActivityRoutes = require('./routes/historicalActivityRoutes');
+const recommendationsRoutes = require('./routes/recommendationsRoutes');
+const customerRoutes = require('./routes/customerRoutes');
+
+
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:4200', // URL frontend Anda
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true // Aktifkan jika menggunakan cookies
+}));
 app.use(bodyParser.json()); // Parsing JSON body
 
+
+
 // Koneksi ke MongoDB
-mongoose.connect('mongodb://localhost:27017/TrackMe2');
+mongoose.connect('mongodb://localhost:27017/TrackMe2', { useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => console.log('MongoDB connected'))
+.catch((err) => console.error(err));
 
 // Middleware untuk verifikasi token JWT
 const verifyToken = (req, res, next) => {
@@ -42,6 +59,20 @@ app.post('/login/customer', customerControl.loginCustomer);
 // Rute untuk menyimpan daily activity dengan autentikasi
 app.post('/daily-activity', dailyActivityControl.addDailyActivity);
 
+//Rute untuk menggunakan historical activity yg telah diinput di daily activity
+app.use('/api/historical-activity', historicalActivityRoutes);
+
+//Rute untuk menggunakan recommendations yg telah diinput di daily activity
+app.use('/api/recommendations', recommendationsRoutes);
+
+// Rute untuk friends
+app.use('/api/friends', friendRoutes);
+
+// Rute untuk messages
+app.use('/api/messages', messageRoutes);
+
+// Gunakan route untuk /api/achievements
+app.use('/api/achievements', achievementRoutes);
 
 // Menjalankan server
 const PORT = process.env.PORT || 5000;
